@@ -8,10 +8,11 @@ include WEBrick
 class K4Server
   attr_accessor :webrick
 
-  def initialize(port, address = nil, verbose = false)
+  def initialize(port, address = '0.0.0.0', verbose = false)
    @verbose = verbose
    @webrick = HTTPServer.new(:Port => port, :Logger => ServerLogger.new(verbose), 
-     :DocumentRoot => "./WebRoot", :DoNotReverseLookup => true)
+     :DocumentRoot => "./WebRoot", :BindAddress => address, :DoNotReverseLookup => true)
+	 
    registerServlets   
    ['INT', 'TERM'].each { |signal|
       trap(signal){ @webrick.shutdown } 

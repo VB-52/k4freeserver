@@ -6,11 +6,12 @@ require './K4Server'
 
 args = PTCommon::Arguments.new(
   {
-  'bindaddr' => "0:0:0:0",
+  'bindaddr' => "0.0.0.0",
   'v' => false, # Verbose mode
   'help' => false,
   'version' => false,
   'device' => :askuser,
+  'port' => "8080",
   })
 startup(args)
 
@@ -67,7 +68,7 @@ $g_screensavers = screensavers.sort_by { rand }
 $g_scindex = 0
 
 begin
-  server = K4Server.new(80, args.bindaddr, args.v)
+  server = K4Server.new(args.port, args.bindaddr, args.v)
   server.start
 rescue Errno::EADDRINUSE
   $stderr.puts "Cannot start server on #{args.bindaddr}:#{args.port} because the port is already used by another program. Exiting..."
